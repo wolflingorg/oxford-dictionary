@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\System\Oxford\Client\CacheDecorator;
 use App\System\Oxford\Client\GuzzleClient;
 use App\System\Oxford\v2\Dictionary;
 use Illuminate\Support\ServiceProvider;
@@ -31,6 +32,7 @@ class AppServiceProvider extends ServiceProvider
                 env('DICTIONARY_APP_ID'),
                 env('DICTIONARY_APP_KEY')
             );
+            $client = new CacheDecorator($client);
 
             return new Dictionary($client);
         });

@@ -35,8 +35,14 @@ class Dictionary
                 $word
             ));
         } catch (ClientException $e) {
-            // Process all possible exceptions
-            throw new DictionaryException($e->getMessage());
+            switch ($e->getCode()) {
+                case 404:
+                    $data = null;
+                    break;
+                default:
+                    throw new DictionaryException('Something went wrong');
+            }
+
         }
 
         return (new EntriesBuilder($data))->build();
