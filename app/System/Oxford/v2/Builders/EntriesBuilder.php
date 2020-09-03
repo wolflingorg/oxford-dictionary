@@ -33,25 +33,26 @@ class EntriesBuilder
     }
 
     /**
-     * @param $item
+     * @param $response
      *
      * @return Entry
      */
-    private function buildEntry($item)
+    private function buildEntry($response)
     {
         $entry = new Entry();
 
-        foreach (data_get($item, 'lexicalEntries', []) as $lexicalEntry) {
+        foreach (data_get($response, 'lexicalEntries', []) as $lexicalEntry) {
             foreach (data_get($lexicalEntry, 'entries', []) as $item) {
+
                 foreach (data_get($item, 'senses', []) as $sence) {
                     foreach (data_get($sence, 'definitions', []) as $definition) {
                         $entry->addDefinition($definition);
                     }
                 }
-            }
 
-            foreach (data_get($lexicalEntry, 'pronunciations', []) as $pronunciation) {
-                $entry->addPronunciation(data_get($pronunciation, 'audioFile'));
+                foreach (data_get($item, 'pronunciations', []) as $pronunciation) {
+                    $entry->addPronunciation(data_get($pronunciation, 'audioFile'));
+                }
             }
         }
 
